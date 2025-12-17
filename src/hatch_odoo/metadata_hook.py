@@ -29,8 +29,7 @@ class OdooAddonsDependenciesMetadataHook(MetadataHookInterface):
             )
         )
         depends_override = hatch_odoo_config.get("depends_override", {})
-        for addon_dir in addon_dirs:
-            addon_name = addon_dir.name
+        for addon_dir, addon_name in addon_dirs:
             # Do not add dependencies on addons that are in the project.
             depends_override[addon_name] = None
         options = dict(
@@ -38,7 +37,7 @@ class OdooAddonsDependenciesMetadataHook(MetadataHookInterface):
             depends_override=depends_override,
             post_version_strategy_override=POST_VERSION_STRATEGY_NONE,
         )
-        for addon_dir in addon_dirs:
+        for addon_dir, _ in addon_dirs:
             try:
                 addon_metadata = metadata_from_addon_dir(addon_dir, options)
             except Exception as e:
